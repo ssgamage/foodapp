@@ -39,6 +39,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appicon/logoicon1.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -61,6 +67,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/splash_screen/logo1.png
+     - assets/images/appicon/logoicon1.png
+     - assets/images/validationFlowImg/facebooklogo1.png
+     - assets/images/validationFlowImg/applelogo1.png
+     - assets/images/validationFlowImg/googlelogo1.png
+     - assets/images/validationFlowImg/easyeats1.png
+     - assets/images/validationFlowImg/ellipse3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
