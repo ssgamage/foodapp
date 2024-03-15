@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const Text(
-                        'Welcome back',
+                        'Welcome Yasith',
                         style: TextStyle(
                           fontSize: 30,
                           color: CustomColor.textBlack,
