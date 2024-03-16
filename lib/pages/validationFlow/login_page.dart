@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
+import 'package:foodapp/pages/validationFlow/forgot_pw.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
@@ -18,32 +19,31 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image:
-                    AssetImage('assets/images/validationFlowImg/ellipse3.png'),
-                fit: BoxFit.cover,
-              ),
+      home: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/validationFlowImg/ellipse3.png'),
+              fit: BoxFit.cover,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    padding: const EdgeInsets.only(top: 170),
-                    child: Image.asset(
-                        'assets/images/validationFlowImg/easyeats1.png',
-                        width: 220),
-                  ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 7,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  padding: const EdgeInsets.only(top: 170),
+                  child: Image.asset(
+                      'assets/images/validationFlowImg/easyeats1.png',
+                      width: 220),
                 ),
-                Expanded(
-                  flex: 9,
+              ),
+              Expanded(
+                flex: 9,
+                child: SingleChildScrollView(
                   child: Container(
                     alignment: Alignment.topCenter,
                     padding: const EdgeInsets.only(top: 0),
@@ -170,9 +170,14 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    InkWell(
+                                    GestureDetector(
                                       onTap: () {
-                                        //logic for "Forgot Password?" link
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgotPasswordPage()),
+                                        );
                                       },
                                       child: const Padding(
                                         padding: EdgeInsets.symmetric(
@@ -283,11 +288,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          resizeToAvoidBottomInset: false,
         ),
+        resizeToAvoidBottomInset: false,
       ),
     );
   }
