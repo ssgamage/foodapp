@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/sellerflow/ellipse4.png'),
+              image: AssetImage('assets/images/sellerflow/ellipse6.png'),
               fit: BoxFit.cover,
             ),
           ),
