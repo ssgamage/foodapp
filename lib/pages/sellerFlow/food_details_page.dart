@@ -151,7 +151,7 @@ class MyApp extends StatelessWidget {
                   // Add discount text
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.only(left: 15, right: 210),
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: ' Add Discount  %',
@@ -170,9 +170,9 @@ class MyApp extends StatelessWidget {
                   SizedBox(height: 10),
 
                   // Add meal name text
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.only(left: 15, right: 210),
                     child: TextFormField(
                       decoration: InputDecoration(
                         labelText: ' Meal Name',
@@ -191,7 +191,7 @@ class MyApp extends StatelessWidget {
                   SizedBox(height: 10),
 
                   // Add description text
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TextFormField(
@@ -211,7 +211,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
 
                   //elevate 02
                   ElevatedButton(
