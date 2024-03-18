@@ -10,6 +10,7 @@ class CustomColor {
       Color.fromARGB(255, 238, 232, 75); //FFAA2C
   static const Color textBlack = Color.fromARGB(255, 0, 0, 0);
   static const Color textWhite = Color.fromARGB(255, 255, 255, 255);
+  static const Color ellipse = Color.fromARGB(255, 244, 233, 200);
 
   //FFC107
 
