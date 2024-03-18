@@ -74,6 +74,7 @@ flutter:
      - assets/images/validationFlowImg/easyeats1.png
      - assets/images/validationFlowImg/ellipse3.png
      - assets/images/sellerflow/ellipse6.png
+     - assets/images/sellerflow/ellipse7.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

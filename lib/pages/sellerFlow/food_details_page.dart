@@ -39,13 +39,13 @@ class MyApp extends StatelessWidget {
                 ],
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
+                padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
                 child: Text(
                   'Add Your Meals Menu',
                   // Text below the title
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 11,
+                    fontSize: 14,
                     color: CustomColor.textBlack,
                   ),
                 ),
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/sellerflow/ellipse4.png'),
+              image: AssetImage('assets/images/sellerflow/ellipse7.png'),
               fit: BoxFit.cover,
             ),
           ),
