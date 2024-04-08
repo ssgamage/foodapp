@@ -73,7 +73,10 @@ flutter:
      - assets/images/validationFlowImg/googlelogo1.png
      - assets/images/validationFlowImg/easyeats1.png
      - assets/images/validationFlowImg/ellipse3.png
-
+     - assets/images/userflow/homepage/c111.png
+     - assets/images/userflow/homepage/b11.jpg
+     - assets/images/userflow/homepage/l1.jpg
+     - assets/images/userflow/homepage/d1.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
