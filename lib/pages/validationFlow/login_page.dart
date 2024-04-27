@@ -1,6 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
+import 'package:foodapp/pages/adminFlow/bottomnavigationbar.dart';
+import 'package:foodapp/pages/sellerFlow/seller_main_home.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/main_home_page.dart';
+import 'package:foodapp/pages/validationFlow/firebase_auth_implimentation/firebase_auth_services.dart';
 import 'package:foodapp/pages/validationFlow/forgot_pw.dart';
+import 'package:foodapp/pages/validationFlow/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
@@ -14,6 +21,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
   bool _obscureText = true;
+
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 40),
                                 child: TextFormField(
+                                  controller: _emailController,
                                   decoration: InputDecoration(
                                     labelText: 'Email',
                                     prefixIcon: const Icon(Icons.email),
@@ -91,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 40),
                                 child: TextFormField(
+                                  controller: _passwordController,
                                   obscureText: true,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
@@ -200,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                                     const EdgeInsets.symmetric(horizontal: 40),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // Add your login logic here
+                                    _signIn();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: CustomColor.textWhite,
@@ -261,7 +282,13 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterPage()),
+                              );
+                            },
                             child: RichText(
                               text: const TextSpan(
                                 children: [
@@ -296,4 +323,125 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
+
+  /*void _signIn() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Check the user's custom claims to determine the role
+        Map<String, dynamic> customClaims =
+            (await user.getIdTokenResult(true)).claims ?? {};
+
+        String? role = customClaims['role'];
+
+        if (role == 'Admin') {
+          // Navigate to admin dashboard
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminDashboardPage()),
+          );
+        } else if (role == 'Seller') {
+          // Navigate to seller dashboard
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SellerDashboardPage()),
+          );
+        } else {
+          // Navigate to user dashboard
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserDashboardPage()),
+          );
+        }
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+      // Handle error, display error message, etc.
+    }
+  }*/
+
+  void _signIn() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Check each personal collection for the user's UID
+        List<String> collectionNames = ['admin', 'sellers', 'users'];
+        String? uid;
+        String?
+            collectionName; // Declaring collectionName variable outside the loop
+
+        for (String name in collectionNames) {
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection(name)
+              .doc(user.uid)
+              .get();
+
+          if (userDoc.exists) {
+            uid = user.uid;
+            collectionName =
+                name; // Assigning the current collection name to collectionName variable
+            break;
+          }
+        }
+
+        if (uid != null && collectionName != null) {
+          // Get user document using found UID
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection(collectionName)
+              .doc(uid)
+              .get();
+
+          // Retrieve gender from Firestore document
+          String? role = userDoc['role'];
+
+          if (role == 'Admin') {
+            // Navigate to admin dashboard
+            Navigator.push(
+              context,
+              //MaterialPageRoute(builder: (context) => AdminDashboardPage()),
+              MaterialPageRoute(builder: (context) => NavigationPage()),
+            );
+          } else if (role == 'Seller') {
+            // Navigate to seller dashboard
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SellerMainHomePage()),
+            );
+          } else {
+            // Navigate to user dashboard
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserMainHomePage()),
+            );
+          }
+        } else {
+          // Handle case where user document doesn't exist
+          print('User document not found');
+        }
+      }
+    } catch (e) {
+      print("Error occurred: $e");
+      // Handle error, display error message, etc.
+    }
+  }
+} //end

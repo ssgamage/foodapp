@@ -1,27 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/validationFlow/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => const LoginPage(
-                  title: "EasyEats",
-                )),
+            builder: (context) => const LoginPage(title: "EasyEats")),
       );
     });
   }
@@ -29,11 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColor.backgroundMain,
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Your splash screen content, e.g., logo, etc.
             Image.asset(
               "assets/images/splash_screen/logo1.png",
               width: 200,
@@ -44,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: CustomColor.orangeMain),
+                  color: Colors.orange),
             ),
           ],
         ),

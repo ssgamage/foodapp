@@ -35,6 +35,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.29.0
+  cloud_firestore: ^4.16.1
+  firebase_auth: ^4.19.1
+  firebase_storage: ^11.7.1
+  file_picker: ^8.0.1
 
 dev_dependencies:
   flutter_test:
@@ -74,7 +79,32 @@ flutter:
      - assets/images/validationFlowImg/easyeats1.png
      - assets/images/validationFlowImg/ellipse3.png
      - assets/images/sellerflow/ellipse6.png
+     - assets/images/userflow/homepage/c111.png
      - assets/images/sellerflow/ellipse7.png
+     - assets/images/userflow/homepage/d1.png
+     - assets/images/userflow/homepage/l1.jpg
+     - assets/images/userflow/homepage/b11.jpg
+     - assets/images/userflow/homepage/ho1.jpg
+     - assets/images/userflow/homepage/ho2.jpeg
+     - assets/images/userflow/homepage/ho3.jpeg
+     - assets/images/userflow/homepage/ho4.jpeg
+     - assets/images/userflow/homepage/ho5.jpg
+     - assets/images/userflow/homepage/ho6.jpg
+     - assets/images/userflow/homepage/ot1.png
+     - assets/images/userflow/homepage/ot2.png
+     - assets/images/userflow/homepage/ot3.png
+     - assets/images/userflow/homepage/ot4.png
+     - assets/images/sellerflow/saved1.png
+     - assets/images/sellerflow/oops1.png
+     - assets/images/sellerflow/aboutusimg1.png
+     - assets/images/userflow/foodselect/ds6.png
+     - assets/images/userflow/foodselect/ds5.png
+     - assets/images/userflow/foodselect/ds4.png
+     - assets/images/userflow/foodselect/ds3.png
+     - assets/images/userflow/foodselect/ds2.png
+     - assets/images/userflow/foodselect/ds1.png
+     - assets/images/userflow/loc.jpg
+     - assets/images/userflow/ca1.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
