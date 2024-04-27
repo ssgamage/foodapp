@@ -6,6 +6,7 @@ import 'package:foodapp/pages/sellerFlow/set_location_page.dart';
 class FoodAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColor.ellipse,
@@ -18,6 +19,28 @@ class FoodAddPage extends StatelessWidget {
                   icon: Icon(
                     Icons.chevron_left,
                     color: Colors.black,
+=======
+    return MaterialApp(
+      title: 'Add Your Foods',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColor.ellipse,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      // Handle back button press
+                      print('Back button pressed');
+                    },
+>>>>>>> ed4af63470ffe0bfddb8be2c485a3ac5eac7d4f2
                   ),
                   onPressed: () {
                     // Handle back button press
@@ -74,11 +97,151 @@ class FoodAddPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10.0),
 
+<<<<<<< HEAD
                 //elevate 01
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
+=======
+                  //elevate 01
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    alignment: Alignment.centerLeft,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Add your action for the first button here
+                        print('Update Meal Image');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(200, 40),
+                        foregroundColor: CustomColor.textWhite,
+                        backgroundColor: CustomColor.orangeMain,
+                      ),
+                      child: Text(
+                        'Update Meal Image',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  // Add Qty and Add Price TextFormFields
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: ' Add Price',
+                              labelStyle: TextStyle(
+                                color: CustomColor.textBlack,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              contentPadding: const EdgeInsets.only(left: 5),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: ' - Add Qty + ',
+                              labelStyle: TextStyle(
+                                color: CustomColor.textBlack,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              contentPadding: const EdgeInsets.only(left: 5),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Add discount text
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 210),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: ' Add Discount  %',
+                        labelStyle: TextStyle(
+                          color: CustomColor.textBlack,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        contentPadding: const EdgeInsets.only(left: 5),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  // Add meal name text
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 210),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: ' Meal Name',
+                        labelStyle: TextStyle(
+                          color: CustomColor.textBlack,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        contentPadding: const EdgeInsets.only(left: 5),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  // Add description text
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: ' Add Description',
+                        labelStyle: TextStyle(
+                          color: CustomColor.textBlack,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        contentPadding: const EdgeInsets.only(
+                            right: 0, left: 5, top: 50, bottom: 50),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 5),
+
+                  //elevate 02
+                  ElevatedButton(
+>>>>>>> ed4af63470ffe0bfddb8be2c485a3ac5eac7d4f2
                     onPressed: () {
                       // Add your action for the first button here
                       print('Update Meal Image');
