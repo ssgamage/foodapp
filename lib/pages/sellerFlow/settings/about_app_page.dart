@@ -9,27 +9,13 @@ class AboutAppPage extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: CustomColor.orangeMain,
-                  ),
-                  onPressed: () {
-                    // Handle back button press
-                    print('Back button pressed');
-                  },
-                ),
-                Text(
-                  'About App',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 23,
-                    color: CustomColor.textBlack,
-                  ),
-                ),
-              ],
+            Text(
+              'About App',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+                color: CustomColor.textBlack,
+              ),
             ),
           ],
         ),
