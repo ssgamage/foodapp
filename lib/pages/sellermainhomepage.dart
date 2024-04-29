@@ -106,8 +106,8 @@ class Homescreen extends StatelessWidget {
                 width: 200,
                 height: 200,
                 child: Text(
-                  'Where Culinary Dreams Meet Effortless Reservations. Relish in Seamless Booking, \nEasy Access, and Secure Dining  All at Your Fingertips!',
-                  //'Empower Culinary Journeys with Streamlined Operations, \nUnmatched Efficiency, and a Feast of Opportunities. Elevate Your Business with Our Seamless Reservation Solutions!',
+                  // 'Where Culinary Dreams Meet Effortless Reservations. Relish in Seamless Booking, \nEasy Access, and Secure Dining  All at Your Fingertips!',
+                  'Empower Culinary Journeys with Streamlined Operations, \nUnmatched Efficiency, and a Feast of Opportunities. Elevate Your Business with Our Seamless Reservation Solutions!',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
