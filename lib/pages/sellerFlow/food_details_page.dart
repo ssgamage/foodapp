@@ -14,16 +14,6 @@ class FoodAddPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    // Handle back button press
-                    print('Back button pressed');
-                  },
-                ),
                 Text(
                   'Add Your Foods',
                   style: TextStyle(
@@ -34,16 +24,13 @@ class FoodAddPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
-              child: Text(
-                'Add Your Meals Menu',
-                // Text below the title
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: CustomColor.textBlack,
-                ),
+            Text(
+              'Add Your Meals Menu',
+              // Text below the title
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: CustomColor.textBlack,
               ),
             ),
           ],
@@ -59,22 +46,20 @@ class FoodAddPage extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                //Meal image
-                Container(
-                  width: 100,
-                  height: 25.0,
-                  child: Text('image'),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: CustomColor.textBlack),
-                    borderRadius: BorderRadius.circular(10.0),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 25.0),
+                    // Meal image
+                    child: CircleAvatar(
+                      radius: 70,
+                      // child: Image.asset('assets/images/your_meal_image.png'),
+                    ),
                   ),
                 ),
-                SizedBox(height: 10.0),
 
-                //elevate 01
+                // elevate 01
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   alignment: Alignment.centerLeft,
@@ -97,7 +82,7 @@ class FoodAddPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 25),
 
                 // Add Qty and Add Price TextFormFields
                 Row(
@@ -202,14 +187,14 @@ class FoodAddPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       contentPadding: const EdgeInsets.only(
-                          right: 0, left: 5, top: 50, bottom: 50),
+                          right: 0, left: 5, top: 25, bottom: 50),
                     ),
                   ),
                 ),
 
                 SizedBox(height: 5),
 
-                //elevate 02
+                // elevate 02
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -222,7 +207,7 @@ class FoodAddPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 20),
                     foregroundColor: CustomColor.textWhite,
-                    backgroundColor: CustomColor.backgroundSecondary,
+                    backgroundColor: CustomColor.orangeMain,
                   ),
                   child: Text(
                     'Add Current Location',
@@ -233,9 +218,9 @@ class FoodAddPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height: 5),
 
-                //elevate 03
+                // elevate 03
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(

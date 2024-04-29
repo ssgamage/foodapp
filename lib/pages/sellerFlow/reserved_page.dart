@@ -9,6 +9,7 @@ class ReservedPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 231, 221, 201),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 231, 221, 201),
         title: Text(
           'Reserve',
           style: TextStyle(
@@ -36,11 +37,11 @@ class ReservedPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 25),
+          SizedBox(height: 15),
           SizedBox(
             width: 100,
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: Border.all(color: Color.fromARGB(255, 236, 162, 14)),
                 borderRadius: BorderRadius.circular(7),
@@ -54,7 +55,7 @@ class ReservedPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
