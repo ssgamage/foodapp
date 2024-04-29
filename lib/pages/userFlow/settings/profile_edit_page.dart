@@ -8,6 +8,23 @@ class UserProfileEdit extends StatefulWidget {
 }
 
 class _UserProfileEditState extends State<UserProfileEdit> {
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _dobController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize text controllers with existing data
+    _nameController.text = 'chathura';
+    _emailController.text = 'Dilshan@gmail.com';
+    _phoneController.text = '0771324586';
+    _addressController.text = 'No.132/4, Pitipana, Homagama';
+    _dobController.text = '07/03/2002';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,137 +118,15 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Name:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(
-                              width: 5), // Add spacing between label and value
-                          Text(
-                            'chathura',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                        height: 15), // Add some vertical spacing between fields
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Email:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'Dilshan@gmail.com',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildEditableField('Name:', _nameController),
                     SizedBox(height: 15),
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Phone:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            '0771324586',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildEditableField('Email:', _emailController),
                     SizedBox(height: 15),
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Address:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'No.132/4, Pitipana, Homagama',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildEditableField('Phone:', _phoneController),
                     SizedBox(height: 15),
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Date of Birth:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            '07/03/2002',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildEditableField('Address:', _addressController),
+                    SizedBox(height: 15),
+                    buildEditableField('Date of Birth:', _dobController),
                     SizedBox(height: 20),
                     Align(
                       alignment: Alignment.center,
@@ -248,9 +143,10 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                             foregroundColor: Colors.white),
                         child: const Text('Save'),
                       ),
-                    ), // Add some vertical spacing after the last field
+                    ),
                   ],
                 ),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
@@ -258,6 +154,37 @@ class _UserProfileEditState extends State<UserProfileEdit> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildEditableField(String label, TextEditingController controller) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          SizedBox(width: 5),
+          Expanded(
+            child: TextFormField(
+              controller: controller,
+              style: TextStyle(fontSize: 14),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

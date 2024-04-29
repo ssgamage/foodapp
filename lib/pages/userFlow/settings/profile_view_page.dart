@@ -116,8 +116,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
-                              width: 5), // Add spacing between label and value
+                          SizedBox(width: 5),
                           Text(
                             'chathura',
                             style: TextStyle(
@@ -127,8 +126,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                        height: 15), // Add some vertical spacing between fields
+                    SizedBox(height: 15),
                     Container(
                       padding: EdgeInsets.all(18.0),
                       decoration: BoxDecoration(
@@ -232,9 +230,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                        height:
-                            20), // Add some vertical spacing after the last field
+                    SizedBox(height: 20),
                   ],
                 ),
                 Row(

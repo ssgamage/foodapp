@@ -20,7 +20,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Breakfast Step 3 / 3'),
+        title: Text('Breakfast Step 3/3'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
