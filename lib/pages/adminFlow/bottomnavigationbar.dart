@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/adminFlow/admin_sellermanagement_page.dart';
 import 'package:foodapp/pages/adminFlow/admin_usermanagement_page.dart';
 import 'package:foodapp/pages/adminFlow/report_page.dart';
@@ -13,6 +14,18 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 219, 218, 218),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 219, 218, 218),
+        title: Text(
+          'Admin Dashboard',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+            color: CustomColor.textBlack,
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +38,21 @@ class _NavigationPageState extends State<NavigationPage> {
                 );
                 print('Button 1 pressed');
               },
-              child: Text('User Management'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.orangeMain,
+                fixedSize: Size(300, 75),
+              ),
+              child: Text(
+                'User Management',
+                style: TextStyle(
+                  color: CustomColor.textWhite,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             ElevatedButton(
               onPressed: () {
@@ -35,7 +62,21 @@ class _NavigationPageState extends State<NavigationPage> {
                 );
                 print('Button 2 pressed');
               },
-              child: Text('Supplier Management'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.orangeMain,
+                fixedSize: Size(300, 75),
+              ),
+              child: Text(
+                'Supplier Management',
+                style: TextStyle(
+                  color: CustomColor.textWhite,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             ElevatedButton(
               onPressed: () {
@@ -45,7 +86,21 @@ class _NavigationPageState extends State<NavigationPage> {
                 );
                 print('Button 3 pressed');
               },
-              child: Text('Reserved Details'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.orangeMain,
+                fixedSize: Size(300, 75),
+              ),
+              child: Text(
+                'Reserved Details',
+                style: TextStyle(
+                  color: CustomColor.textWhite,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             ElevatedButton(
               onPressed: () {
@@ -55,7 +110,18 @@ class _NavigationPageState extends State<NavigationPage> {
                 );
                 print('Button 4 pressed');
               },
-              child: Text('Reports'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.orangeMain,
+                fixedSize: Size(300, 75),
+              ),
+              child: Text(
+                'Reports',
+                style: TextStyle(
+                  color: CustomColor.textWhite,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),

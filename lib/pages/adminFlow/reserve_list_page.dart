@@ -9,7 +9,83 @@ class ReserveDetailsPage extends StatelessWidget {
       'User': 'RTK Achinthha',
       'Supplier': 'KND Food & s&d food',
     },
-    // Add more entries as needed
+    {
+      'Time': '2:30 PM',
+      'Date': 'January 4, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': 'KND Food',
+    },
+    {
+      'Time': '3:30 PM',
+      'Date': 'January 5, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': " s&d food",
+    },
+    {
+      'Time': '6:30 PM',
+      'Date': 'june 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': 'KND Food ',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2024',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': 'KND Food ',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': 'KND Food ',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': ' s&d food',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2021',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': ' s&d food',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': ' s&d food',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': 'KND Food ',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': ' s&d food',
+    },
+    {
+      'Time': '1:30 PM',
+      'Date': 'January 3, 2023',
+      'Email': 'chu@gmail.com',
+      'User': 'RTK Achinthha',
+      'Supplier': ' s&d food',
+    },
   ];
 
   @override
@@ -26,7 +102,9 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 219, 218, 218),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 219, 218, 218),
         title: Text('Reserve'),
       ),
       body: ListView(

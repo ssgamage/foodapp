@@ -62,7 +62,9 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 219, 218, 218),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 219, 218, 218),
         title: Text('User Management'),
       ),
       body: Column(

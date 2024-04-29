@@ -6,8 +6,8 @@ class ReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 199, 195, 195),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 219, 218, 218),
         title: Text(
           'Reports',
           style: TextStyle(
@@ -41,7 +41,7 @@ class ReportPage extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-          color: CustomColor.textWhite,
+          color: Color.fromARGB(255, 219, 218, 218),
           child: Column(
             children: [
               SizedBox(height: 25),
