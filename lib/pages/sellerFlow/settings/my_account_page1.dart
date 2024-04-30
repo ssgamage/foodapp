@@ -11,15 +11,6 @@ class MyAccountPage1 extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.orange,
-              ),
-              onPressed: () {
-                // Add navigation logic here
-              },
-            ),
             const Text('My Account'),
           ],
         ),
@@ -27,10 +18,13 @@ class MyAccountPage1 extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-                'assets/profile_image.png'), // Add your image asset here
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue,
+              //  backgroundImage: AssetImage('assets/your_image.png'),
+            ), // Add your image asset here
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
+import 'package:foodapp/pages/SellerFlow/settings/my_account_page1.dart';
 import 'package:foodapp/pages/sellerFlow/settings/main_setting_page.dart';
-import 'package:foodapp/pages/sellerFlow/settings/my_account_page1.dart';
 
 class MyAccountPage extends StatelessWidget {
   const MyAccountPage({super.key});
@@ -12,15 +12,6 @@ class MyAccountPage extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.orange,
-              ),
-              onPressed: () {
-                // Add navigation logic here
-              },
-            ),
             const Text('My Account'),
           ],
         ),
@@ -28,10 +19,13 @@ class MyAccountPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-                'assets/profile_image.png'), // Add your image asset here
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue,
+              //  backgroundImage: AssetImage('assets/your_image.png'),
+            ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -49,8 +43,11 @@ class MyAccountPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyAccountPage1()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              MyAccountPage1()), //MyAccountPage1
                     );
+                    print("Edit Profile");
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
@@ -83,7 +80,7 @@ class MyAccountPage extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Enter About',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(20.0),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
               ),
             ),

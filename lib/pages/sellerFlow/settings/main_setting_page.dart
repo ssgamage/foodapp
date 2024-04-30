@@ -47,7 +47,7 @@ class SellerSettingPage extends StatelessWidget {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.white,
-                          backgroundImage: AssetImage('assets/your_image.png'),
+                          //  backgroundImage: AssetImage('assets/your_image.png'),
                         ),
                         SizedBox(width: 15),
                         Column(
