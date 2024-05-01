@@ -45,12 +45,12 @@ class BodyContent extends StatelessWidget {
               children: <Widget>[
                 _buildContainerWithImageAndText(
                   "assets/images/userflow/homepage/ot1.png",
-                  'Rice and Curry',
+                  'Fruit Salad',
                 ),
                 SizedBox(width: 16),
                 _buildContainerWithImageAndText(
                   "assets/images/userflow/homepage/ot2.png",
-                  'Fried Rice',
+                  'Vatalappam',
                 ),
               ],
             ),
@@ -61,12 +61,12 @@ class BodyContent extends StatelessWidget {
               children: <Widget>[
                 _buildContainerWithImageAndText(
                   "assets/images/userflow/homepage/ot3.png",
-                  'Noodles',
+                  'Oatmeals',
                 ),
                 SizedBox(width: 16),
                 _buildContainerWithImageAndText(
                   "assets/images/userflow/homepage/ot4.png",
-                  'String Hoppers',
+                  'Biscuit Pudding',
                 ),
               ],
             ),
