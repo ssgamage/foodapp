@@ -47,7 +47,6 @@ class MyAccountPage extends StatelessWidget {
                           builder: (context) =>
                               MyAccountPage1()), //MyAccountPage1
                     );
-                    print("Edit Profile");
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,

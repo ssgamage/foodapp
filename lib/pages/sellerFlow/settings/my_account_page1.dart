@@ -76,7 +76,7 @@ class MyAccountPage1 extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Enter About',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(20.0),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
               ),
             ),
