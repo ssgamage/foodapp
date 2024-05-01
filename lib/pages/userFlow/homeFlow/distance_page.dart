@@ -67,13 +67,6 @@ class DistancePage extends StatelessWidget {
                               ),
                             ),
                             const Text(
-                              '10% OFF', //food Dicount
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.red,
-                              ),
-                            ),
-                            const Text(
                               'Green House', //food shop name
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -117,13 +110,6 @@ class DistancePage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
-                            ),
-                          ),
-                          const Text(
-                            '10% OFF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
                             ),
                           ),
                           const Text(
@@ -177,13 +163,6 @@ class DistancePage extends StatelessWidget {
                             ),
                           ),
                           const Text(
-                            '10% OFF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          ),
-                          const Text(
                             'Rivirasa Bojun',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -226,13 +205,6 @@ class DistancePage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
-                            ),
-                          ),
-                          const Text(
-                            '10% OFF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
                             ),
                           ),
                           const Text(
@@ -286,13 +258,6 @@ class DistancePage extends StatelessWidget {
                             ),
                           ),
                           const Text(
-                            '10% OFF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          ),
-                          const Text(
                             'Awanhala',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -335,13 +300,6 @@ class DistancePage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
-                            ),
-                          ),
-                          const Text(
-                            '10% OFF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
                             ),
                           ),
                           const Text(
