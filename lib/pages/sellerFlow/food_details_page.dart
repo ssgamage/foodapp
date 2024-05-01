@@ -48,12 +48,12 @@ class FoodAddPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 25.0),
+                    padding: const EdgeInsets.only(bottom: 40),
                     // Meal image
                     child: CircleAvatar(
-                      radius: 70,
+                      radius: 80,
                       // child: Image.asset('assets/images/your_meal_image.png'),
                     ),
                   ),
@@ -61,8 +61,6 @@ class FoodAddPage extends StatelessWidget {
 
                 // elevate 01
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your action for the first button here
@@ -82,7 +80,7 @@ class FoodAddPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 15),
 
                 // Add Qty and Add Price TextFormFields
                 Row(
@@ -112,7 +110,7 @@ class FoodAddPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
                           decoration: InputDecoration(
-                            labelText: ' - Add Qty + ',
+                            labelText: ' Add Qty ',
                             labelStyle: TextStyle(
                               color: CustomColor.textBlack,
                               fontWeight: FontWeight.normal,
@@ -129,50 +127,8 @@ class FoodAddPage extends StatelessWidget {
                   ],
                 ),
 
-                // Add discount text
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 210),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: ' Add Discount  %',
-                      labelStyle: TextStyle(
-                        color: CustomColor.textBlack,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 5),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                // Add meal name text
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 210),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: ' Meal Name',
-                      labelStyle: TextStyle(
-                        color: CustomColor.textBlack,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 5),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
                 // Add description text
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
@@ -192,7 +148,7 @@ class FoodAddPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 5),
+                SizedBox(height: 15),
 
                 // elevate 02
                 ElevatedButton(
@@ -218,7 +174,7 @@ class FoodAddPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 5),
+                SizedBox(height: 15),
 
                 // elevate 03
                 ElevatedButton(
