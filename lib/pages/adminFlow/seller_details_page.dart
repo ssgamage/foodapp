@@ -29,15 +29,10 @@ class SellerDetails extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/greenhouse_icon.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white,
+                        //  backgroundImage: AssetImage('assets/your_image.png'),
                       ),
                       SizedBox(height: 8),
                       Text(
