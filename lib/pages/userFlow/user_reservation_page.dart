@@ -1,7 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/shop_report_page.dart';
 
-class UserReservePage extends StatelessWidget {
-  const UserReservePage({super.key});
+class UserReservePage1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return UserPage();
+  }
+}
+
+class UserPage extends StatefulWidget {
+  @override
+  _UserPageState createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  late Future<List<UserData>> _usersFuture;
+  List<UserData> users = [];
+  List<UserData> filteredUsers = [];
+  double verticalPadding = 10.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _usersFuture = getUsersFromFirestore();
+  }
+
+  Future<List<UserData>> getUsersFromFirestore() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<UserData> users = [];
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(currentUser!.uid)
+        .collection('notifications')
+        .get();
+
+    querySnapshot.docs.forEach((doc) {
+      users.add(UserData(
+        catogary: doc['Catogary'],
+        meal: doc['Meal'],
+        qyt: doc['Qyt'],
+        sid: doc['sid'],
+      ));
+    });
+
+    setState(() {
+      this.users = users;
+      filteredUsers = users;
+    });
+
+    return users;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,403 +82,110 @@ class UserReservePage extends StatelessWidget {
         ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20), // Add some space below the header
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Container(
-                width: 110,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Today', // this code part having a Day (today)
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.orange,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(
+                  vertical: verticalPadding, horizontal: 20),
+              itemCount: filteredUsers.length,
+              itemBuilder: (BuildContext context, int index) {
+                return UserCard(
+                  userData: filteredUsers[index],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ShopReportPage(userData: filteredUsers[index]),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
-          const SizedBox(height: 10), // Add some space between the containers
-          Container(
-            width: 400,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Green house', // shop name
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '11:00 AM', // food reserve time
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Cancel', // cancel ,compltetd , cancelled
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        ],
+      ),
+    );
+  }
+}
+
+class UserData {
+  final String catogary;
+  final String meal;
+  final String qyt;
+  final String sid;
+
+  UserData({
+    required this.catogary,
+    required this.meal,
+    required this.qyt,
+    required this.sid,
+  });
+}
+
+class UserCard extends StatelessWidget {
+  final UserData userData;
+  final VoidCallback onTap;
+
+  const UserCard({
+    required this.userData,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: 400,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(height: 10), // Add some space between the containers
-          Container(
-            width: 400,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Rivirasa Bojun', // shop name
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '10:32 AM', // food reserve time
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Completed', // cancel ,compltetd , cancelled
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10), // Add some space between the containers
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  width: 110,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Yesterday', //Date
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userData.catogary, // shop name
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         color: Colors.orange,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    Text(
+                      userData.meal, // food reserve time
+                      style: TextStyle(
+                        fontSize: 7,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Qyt: ${userData.qyt}', // cancel ,compltetd , cancelled
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                    height: 20), // Add some space between the containers
-                Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Gammedda', // shop name
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '08:30 AM', // food reserve time
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Completed', // cancel ,compltetd , cancelled
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Amalikt House', // shop name
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '10:40 AM', // food reserve time
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Completed', // cancel ,compltetd , cancelled
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'KND Eleven', // shop name
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '10:30 PM', // food reserve time
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Completed', // cancel ,compltetd , cancelled
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Rivirasa Bojun', // shop name
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '10:00 AM', // food reserve time
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Completed', // cancel ,compltetd , cancelled
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Green house', // shop name
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '10:00 AM', // food reserve time
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Completed', // cancel ,compltetd , cancelled
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

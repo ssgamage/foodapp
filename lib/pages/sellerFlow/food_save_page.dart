@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/sellerFlow/food_details_page.dart';
+import 'package:foodapp/pages/sellerFlow/food_selection_page.dart';
 
 class FoodSavePage extends StatelessWidget {
   @override
@@ -37,7 +37,8 @@ class FoodSavePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FoodAddPage()),
+                MaterialPageRoute(
+                    builder: (context) => SellerFoodSelectionPage()),
               );
               //print('Save button pressed');
             },

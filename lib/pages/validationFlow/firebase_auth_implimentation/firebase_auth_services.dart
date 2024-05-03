@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:foodapp/pages/validationFlow/login_page.dart';
 
 class FirebaseAuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -25,5 +27,20 @@ class FirebaseAuthService {
       print("Error occured");
     }
     return null;
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginPage(
+                  title: '',
+                )), // Navigate to LoginPage
+      );
+    } catch (e) {
+      print("Error occurred: $e");
+    }
   }
 }

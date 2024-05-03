@@ -1,16 +1,137 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodapp/pages/userFlow/homeFlow/location_view_page.dart';
-import 'package:foodapp/pages/userFlow/user_reservation_page.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/distance_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopMoreDetails extends StatefulWidget {
+  final userData; // Define the userData parameter here
+
+  const ShopMoreDetails({required this.userData});
+
   @override
   _ShopMoreDetailsState createState() => _ShopMoreDetailsState();
 }
 
 class _ShopMoreDetailsState extends State<ShopMoreDetails> {
+  TextEditingController _qytController = TextEditingController();
+  //final _qytController = TextEditingController();
+  late User _user;
+  late Map<String, dynamic> _userData = {}; // Store user data
+
+  @override
+  void initState() {
+    super.initState();
+    _user = FirebaseAuth.instance.currentUser!;
+    _getUserData();
+  }
+
+  @override
+  void dispose() {
+    _qytController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _launchMaps(double latitude, double longitude) async {
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> _getUserData() async {
+    DocumentSnapshot userDataSnapshot = await FirebaseFirestore.instance
+        .collection(
+            'sellers') // Assuming user data is stored in the 'users' collection
+        .doc(widget.userData.docId) // Use user's UID to retrieve their document
+        .get();
+
+    setState(() {
+      _userData = userDataSnapshot.data() as Map<String, dynamic>;
+    });
+  }
+
+  Future<void> decreaseQuantity() async {
+    try {
+      // Get the reference to the document
+      DocumentReference docRef = FirebaseFirestore.instance
+          .collection('breakfast')
+          .doc('ricencurry')
+          .collection('rnc')
+          .doc(widget.userData.docId);
+
+      // Get the current quantity
+      int currentQuantity = int.parse(widget.userData.qyt);
+      int reservedQuantity = int.parse(_qytController.text);
+
+      // Update the quantity in the database by decrementing by 1
+      await docRef.update(
+          {'quantity': (currentQuantity - reservedQuantity).toString()});
+    } catch (error) {
+      print('Error decreasing quantity: $error');
+      // Handle error
+    }
+  }
+
+  Future<void> _addSellerNotification() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      // Save food details to Firestore
+      await FirebaseFirestore.instance
+          .collection('breakfast')
+          .doc('ricencurry')
+          .collection('rnc')
+          .doc(widget.userData.docId)
+          .collection('notifications')
+          .doc()
+          .set({
+        'Meal': "Breakfast",
+        'Catogary': "Rice And Curry",
+        'Qyt': _qytController.text,
+        'uid': currentUser!.uid,
+      });
+
+      // Navigate to the FoodSavePage
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DistancePage()),
+      );
+    } catch (error) {
+      // Handle any errors that occur during saving
+      print('Error Reserving: $error');
+    }
+  }
+
+  Future<void> _addUserNotification() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      // Save food details to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('notifications')
+          .doc()
+          .set({
+        'Meal': "Breakfast",
+        'Catogary': "Rice And Curry",
+        'Qyt': _qytController.text,
+        'sid': widget.userData.docId,
+      });
+    } catch (error) {
+      // Handle any errors that occur during saving
+      print('Error Reserving: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -23,6 +144,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
         title: Text('Breakfast Step 3 / 3'),
       ),
       body: Column(
+        //mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
@@ -42,15 +164,17 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
             width: MediaQuery.of(context).size.width *
                 0.6, // Adjust width as needed
             height: 250, // Adjust height as needed
-            child: Image.asset(
-              'assets/images/userflow/foodselect/ds1.png',
+            child: Image.network(
+              widget.userData.foodimage,
               fit: BoxFit.contain,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(6.0),
             child: Text(
-              'Green House',
+              _userData.containsKey('Name')
+                  ? _userData['Name']
+                  : 'Name not available',
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -70,14 +194,16 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
                 ),
                 children: [
                   TextSpan(
-                    text:
-                        'Discover diverse cuisines at our welcoming restaurant app, perfect for everyone!\n',
+                    text: _userData['Description'],
+                  ),
+                  TextSpan(
+                    text: '\n',
                   ),
                   TextSpan(
                     text: 'Contact Number - ',
                   ),
                   TextSpan(
-                    text: '077-742111  /  011-123333',
+                    text: _userData['Phone'],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -99,7 +225,16 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
             child: Column(
               children: [
                 Text(
-                  'Hey, Today available curries\nDhal curry\nPolos curry\nBeans curry\nChicken curry\nBrinjal eggplant moju curry',
+                  'Hey, Today available curries: \n',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold, // Bold the text
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  widget.userData.desc,
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
@@ -112,7 +247,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Rs 200',
+                      'Rs ${widget.userData.price}',
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.red, // Change text color to red
@@ -120,7 +255,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
                       ),
                     ),
                     Text(
-                      'Quantity: 20',
+                      'Quantity: ${widget.userData.qyt}',
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.red,
@@ -137,45 +272,34 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () {
-                          // Handle the addition action
-                        },
-                      ),
-                      Text(
-                        'Add Qty',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                  Container(
+                    width: 100.0,
+                    height: 30.0,
+                    child: TextFormField(
+                      controller: _qytController,
+                      decoration: InputDecoration(
+                        labelText: 'Add Qyt',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            width: 0.5, // reduced border height
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () {
-                          // Handle the subtraction action
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                   SizedBox(
                       height:
-                          2), // Add some space between the buttons and the new row
+                          10), // Add some space between the buttons and the new row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LocationView()),
-                          );
+                          final latitude = widget.userData.location.latitude;
+                          final longitude = widget.userData.location.longitude;
+                          _launchMaps(latitude, longitude);
                         },
                         style: ButtonStyle(
                           backgroundColor:
@@ -187,12 +311,10 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          decreaseQuantity();
                           // UserReservePage
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserReservePage()),
-                          );
+                          _addSellerNotification();
+                          _addUserNotification();
                         },
                         style: ButtonStyle(
                           backgroundColor:

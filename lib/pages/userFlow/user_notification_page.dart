@@ -95,7 +95,10 @@ class MyWidgets extends StatelessWidget {
                 case 1:
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShopReportPage()),
+                    MaterialPageRoute(
+                        builder: (context) => ShopReportPage(
+                              userData: null,
+                            )),
                   );
                   break;
                 default:

@@ -35,6 +35,7 @@ class _UserPageState extends State<UserPage> {
       users.add(UserData(
         name: doc['Name'],
         email: doc['Email'],
+        //profile: doc['profileImageUrl'],
       ));
     });
 
@@ -116,6 +117,7 @@ class UserData {
   UserData({
     required this.name,
     required this.email,
+    //required profile,
   });
 }
 

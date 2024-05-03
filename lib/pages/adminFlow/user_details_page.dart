@@ -5,7 +5,9 @@ import 'package:foodapp/pages/adminFlow/admin_usermanagement_page.dart';
 class UserDetailsPage extends StatelessWidget {
   final UserData userData; // Add this line to receive UserData object
 
-  const UserDetailsPage({required this.userData}); // Add this constructor
+  const UserDetailsPage({required this.userData});
+
+  get profile => null; // Add this constructor
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +43,10 @@ class UserDetailsPage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150'), // Change image URL
+                    /*backgroundImage: profile != null
+                        ? NetworkImage(profile!)
+                        : AssetImage('https://via.placeholder.com/150')
+                            as ImageProvider,*/ // Change image URL
                   ),
                   SizedBox(height: 10),
                   Text(

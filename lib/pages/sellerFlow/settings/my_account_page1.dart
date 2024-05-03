@@ -1,9 +1,50 @@
-import 'package:flutter/material.dart';
-import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/sellerFlow/settings/my_account_page.dart';
+import 'dart:io';
 
-class MyAccountPage1 extends StatelessWidget {
-  const MyAccountPage1({super.key});
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class MyAccountPage1 extends StatefulWidget {
+  const MyAccountPage1({Key? key}) : super(key: key);
+
+  @override
+  _MyAccountPage1State createState() => _MyAccountPage1State();
+}
+
+class _MyAccountPage1State extends State<MyAccountPage1> {
+  File? _imageFile;
+
+  // Function to select image from gallery
+  Future<void> _selectImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+
+      // Upload the image to Firebase Storage
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('profile_images')
+          .child('${currentUser!.uid}.jpg');
+      await storageRef.putFile(_imageFile!);
+
+      // Get the download URL of the uploaded image
+      final imageUrl = await storageRef.getDownloadURL();
+
+      // Save the download URL in Firestore (You need to implement this part)
+      // Example:
+      await FirebaseFirestore.instance
+          .collection('sellers')
+          .doc(currentUser.uid)
+          .update({'profileImageUrl': imageUrl});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,34 +70,20 @@ class MyAccountPage1 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-                'assets/profile_image.png'), // Add your image asset here
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyAccountPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white),
-                  child: const Text('View Profile'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Edit Profile button action
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColor.backgroundOther,
-                      foregroundColor: Colors.white),
-                  child: const Text('Edit Profile'),
-                ),
-              ],
+            _imageFile != null
+                ? Image.file(
+                    _imageFile!,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  )
+                : Placeholder(
+                    fallbackHeight: 100,
+                    fallbackWidth: 100,
+                  ),
+            ElevatedButton(
+              onPressed: _selectImage,
+              child: Text(_imageFile == null ? 'Add Image' : 'Change Image'),
             ),
             const SizedBox(height: 20),
             Container(
@@ -86,7 +113,6 @@ class MyAccountPage1 extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
@@ -101,7 +127,6 @@ class MyAccountPage1 extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
@@ -116,7 +141,6 @@ class MyAccountPage1 extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(

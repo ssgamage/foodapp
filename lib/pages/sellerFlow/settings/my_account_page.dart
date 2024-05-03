@@ -1,10 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/settings/main_setting_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/my_account_page1.dart';
 
-class MyAccountPage extends StatelessWidget {
-  const MyAccountPage({super.key});
+class MyAccountPage extends StatefulWidget {
+  const MyAccountPage({Key? key}) : super(key: key);
+
+  @override
+  _MyAccountPageState createState() => _MyAccountPageState();
+}
+
+class _MyAccountPageState extends State<MyAccountPage> {
+  String? _profileImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  void _loadProfileImage() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('sellers')
+            .doc(currentUser.uid)
+            .get();
+        final data = docSnapshot.data();
+        if (data != null && data.containsKey('profileImageUrl')) {
+          setState(() {
+            _profileImageUrl = data['profileImageUrl'];
+          });
+        }
+      } catch (e) {
+        print('Error fetching profile image URL: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +65,16 @@ class MyAccountPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-                'assets/profile_image.png'), // Add your image asset here
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.blue,
+              backgroundImage: _profileImageUrl != null
+                  ? NetworkImage(_profileImageUrl!)
+                  : AssetImage(
+                          'https://as2.ftcdn.net/v2/jpg/03/59/58/91/1000_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg')
+                      as ImageProvider, // Cast AssetImage to ImageProvider
+            ),
+
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

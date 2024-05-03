@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/sellerFlow/food_details_page.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class SetLocationPage extends StatelessWidget {
+class SetLocationPage extends StatefulWidget {
+  @override
+  _SetLocationPageState createState() => _SetLocationPageState();
+}
+
+class _SetLocationPageState extends State<SetLocationPage> {
+  late LatLng _selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set initial location (e.g., center of the map)
+    _selectedLocation = LatLng(37.42796133580664, -122.085749655962);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColor.ellipse,
         title: Text(
-          'Add Current Location',
+          'Add Your Location',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -23,14 +37,31 @@ class SetLocationPage extends StatelessWidget {
           ),
           onPressed: () {
             // Handle back button press
-            print('Back button pressed');
+            Navigator.pop(context);
           },
         ),
       ),
       body: Stack(
         children: [
-          // Your other widgets for the body content go here
-
+          // Map widget
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _selectedLocation,
+              zoom: 14,
+            ),
+            markers: {
+              Marker(
+                markerId: MarkerId('selectedLocation'),
+                position: _selectedLocation,
+                draggable: true,
+                onDragEnd: (LatLng newPosition) {
+                  setState(() {
+                    _selectedLocation = newPosition;
+                  });
+                },
+              ),
+            },
+          ),
           // Positioned widget to place the button at the bottom center
           Positioned(
             bottom: 80.0, // Adjust bottom margin as needed
@@ -41,11 +72,7 @@ class SetLocationPage extends StatelessWidget {
               height: 50,
               child: FloatingActionButton.extended(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FoodAddPage()),
-                  );
-                  print('Location set successfully');
+                  Navigator.pop(context, _selectedLocation);
                 },
                 label: Text(
                   'Set Location',

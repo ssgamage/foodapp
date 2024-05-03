@@ -1,9 +1,98 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/food_save_page.dart';
 import 'package:foodapp/pages/sellerFlow/set_location_page.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
-class FoodAddPage extends StatelessWidget {
+class FoodAddPage extends StatefulWidget {
+  final LatLng selectedLocation;
+
+  FoodAddPage({required this.selectedLocation});
+
+  @override
+  State<FoodAddPage> createState() => _FoodAddPageState();
+}
+
+class _FoodAddPageState extends State<FoodAddPage> {
+  File? _imageFile;
+  TextEditingController _priceController = TextEditingController();
+  TextEditingController _quantityController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  late LatLng _selectedLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLocation = widget.selectedLocation; // Initialize selectedLocation
+  }
+
+  @override
+  void dispose() {
+    // Clean up controllers when widget is disposed
+    _priceController.dispose();
+    _quantityController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  // Function to handle image selection from gallery
+  Future<void> _selectImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  // Function to handle saving the food details to Firebase
+  Future<void> _saveFoodDetails() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final fileName = _imageFile!.path.split('/').last;
+
+      // Upload image to Firebase Storage
+      final storageRef =
+          FirebaseStorage.instance.ref().child('rnc').child(fileName);
+      await storageRef.putFile(_imageFile!);
+
+      // Get the download URL of the uploaded image
+      final imageUrl = await storageRef.getDownloadURL();
+
+      // Save food details to Firestore
+      await FirebaseFirestore.instance
+          .collection('breakfast')
+          .doc('ricencurry')
+          .collection('rnc')
+          .doc(currentUser?.uid)
+          .set({
+        'imageUrl': imageUrl,
+        'price': _priceController.text,
+        'quantity': _quantityController.text,
+        'description': _descriptionController.text,
+        'location':
+            GeoPoint(_selectedLocation.latitude, _selectedLocation.longitude),
+      });
+
+      // Navigate to the FoodSavePage
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FoodSavePage()),
+      );
+    } catch (error) {
+      // Handle any errors that occur during saving
+      print('Error saving food details: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,16 +103,6 @@ class FoodAddPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    // Handle back button press
-                    print('Back button pressed');
-                  },
-                ),
                 Text(
                   'Add Your Foods',
                   style: TextStyle(
@@ -34,16 +113,13 @@ class FoodAddPage extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
-              child: Text(
-                'Add Your Meals Menu',
-                // Text below the title
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: CustomColor.textBlack,
-                ),
+            Text(
+              'Add Your Meals Menu',
+              // Text below the title
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: CustomColor.textBlack,
               ),
             ),
           ],
@@ -59,30 +135,24 @@ class FoodAddPage extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                //Meal image
-                Container(
-                  width: 100,
-                  height: 25.0,
-                  child: Text('image'),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: CustomColor.textBlack),
-                    borderRadius: BorderRadius.circular(10.0),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    // Meal image
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage:
+                          _imageFile != null ? FileImage(_imageFile!) : null,
+                    ),
                   ),
                 ),
-                SizedBox(height: 10.0),
 
-                //elevate 01
+                // elevate 01
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  alignment: Alignment.centerLeft,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Add your action for the first button here
-                      print('Update Meal Image');
-                    },
+                    onPressed: _selectImage,
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(200, 40),
                       foregroundColor: CustomColor.textWhite,
@@ -97,7 +167,7 @@ class FoodAddPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
 
                 // Add Qty and Add Price TextFormFields
                 Row(
@@ -107,6 +177,7 @@ class FoodAddPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: _priceController,
                           decoration: InputDecoration(
                             labelText: ' Add Price',
                             labelStyle: TextStyle(
@@ -126,8 +197,9 @@ class FoodAddPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: _quantityController,
                           decoration: InputDecoration(
-                            labelText: ' - Add Qty + ',
+                            labelText: ' Add Qty ',
                             labelStyle: TextStyle(
                               color: CustomColor.textBlack,
                               fontWeight: FontWeight.normal,
@@ -144,53 +216,12 @@ class FoodAddPage extends StatelessWidget {
                   ],
                 ),
 
-                // Add discount text
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 210),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: ' Add Discount  %',
-                      labelStyle: TextStyle(
-                        color: CustomColor.textBlack,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 5),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                // Add meal name text
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 210),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: ' Meal Name',
-                      labelStyle: TextStyle(
-                        color: CustomColor.textBlack,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 5),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-
                 // Add description text
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
+                    controller: _descriptionController,
                     decoration: InputDecoration(
                       labelText: ' Add Description',
                       labelStyle: TextStyle(
@@ -202,48 +233,50 @@ class FoodAddPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       contentPadding: const EdgeInsets.only(
-                          right: 0, left: 5, top: 50, bottom: 50),
+                          right: 0, left: 5, top: 25, bottom: 50),
                     ),
                   ),
                 ),
 
-                SizedBox(height: 5),
+                SizedBox(height: 15),
 
-                //elevate 02
+                // elevate 02
                 ElevatedButton(
                   onPressed: () {
+                    // Navigate to the SetLocationPage to get the selected location
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SetLocationPage()),
-                    );
-                    //print('Add Location pressed');
+                        builder: (context) => SetLocationPage(),
+                      ),
+                    ).then((selectedLocation) {
+                      // Update the selected location when SetLocationPage is popped
+                      if (selectedLocation != null) {
+                        setState(() {
+                          _selectedLocation = selectedLocation;
+                        });
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(250, 20),
                     foregroundColor: CustomColor.textWhite,
-                    backgroundColor: CustomColor.backgroundSecondary,
+                    backgroundColor: CustomColor.orangeMain,
                   ),
                   child: Text(
-                    'Add Current Location',
+                    'Add Location',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 16,
                     ),
                   ),
                 ),
 
-                SizedBox(height: 10),
+                SizedBox(height: 15),
 
-                //elevate 03
+                // elevate 03
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FoodSavePage()),
-                    );
-                    //print('Save button pressed');
-                  },
+                  onPressed: _saveFoodDetails,
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(150, 40),
                     foregroundColor: CustomColor.textWhite,

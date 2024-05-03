@@ -16,7 +16,7 @@ class _UserMainHomePageState extends State<UserMainHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     //Text('Home Page'),
     UserMainHomePage1(),
-    UserReservePage(),
+    UserReservePage1(),
     UserSettingsPage(),
   ];
 

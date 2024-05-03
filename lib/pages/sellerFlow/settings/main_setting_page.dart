@@ -4,8 +4,11 @@ import 'package:foodapp/pages/sellerFlow/settings/about_app_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/help_and_support.dart';
 import 'package:foodapp/pages/sellerFlow/settings/languages_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/my_account_page.dart';
+import 'package:foodapp/pages/validationFlow/firebase_auth_implimentation/firebase_auth_services.dart';
 
 class SellerSettingPage extends StatelessWidget {
+  final FirebaseAuthService _authService = FirebaseAuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -362,7 +365,7 @@ class SellerSettingPage extends StatelessWidget {
                   SizedBox(height: 0),
                   InkWell(
                     onTap: () {
-                      print('Log out');
+                      _handleLogout(context);
                     },
                     child: Container(
                       padding: EdgeInsets.only(left: 20, right: 0),
@@ -407,5 +410,9 @@ class SellerSettingPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _handleLogout(BuildContext context) async {
+    await _authService.signOut(context); // Call the signOut method
   }
 }

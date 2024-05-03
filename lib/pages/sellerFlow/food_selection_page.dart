@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/food_details_page.dart';
 import 'package:foodapp/pages/sellerFlow/food_selection_others.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SellerFoodSelectionPage extends StatelessWidget {
   const SellerFoodSelectionPage({Key? key}) : super(key: key);
@@ -49,7 +50,9 @@ class BodyContent extends StatelessWidget {
                     // Navigate to SellerFoodSelectionPage
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FoodAddPage()),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              FoodAddPage(selectedLocation: LatLng(0, 0))),
                     );
                   },
                   child: _buildContainerWithImageAndText(

@@ -1,59 +1,61 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/adminFlow/seller_details_page.dart';
 
-class SupplierManagement extends StatefulWidget {
+class SupplierManagement extends StatelessWidget {
   @override
-  _SupplierManagementState createState() => _SupplierManagementState();
+  Widget build(BuildContext context) {
+    return UserPage();
+  }
 }
 
-class _SupplierManagementState extends State<SupplierManagement> {
-  List<SupplierData> suppliers = [
-    SupplierData(
-      name: 'Green House',
-      email: 'chathurikaalwis@gmail.com',
-      imagePath: 'https://example.com/assets/GreenHouse_image.jpg',
-    ),
-    SupplierData(
-      name: 'M&D Shop',
-      email: 'MDShop@gmail.com',
-      imagePath: 'https://example.com/assets/M&DShop_image.jpg',
-    ),
-    SupplierData(
-      name: 'Gam madda',
-      email: 'Gam madda@gmail.com',
-      imagePath: 'https://example.com/assets/Gammadda_image.jpg',
-    ),
-    SupplierData(
-      name: 'Rivirasa Bojun',
-      email: 'Rivirasa@gmail.com',
-      imagePath: 'https://example.com/assets/Rivirasa_image.jpg',
-    ),
-    SupplierData(
-      name: 'Awanhala',
-      email: 'Awanhala@gmail.com',
-      imagePath: 'https://example.com/assets/Awanhala_image.jpg',
-    ),
-  ];
+class UserPage extends StatefulWidget {
+  @override
+  _UserPageState createState() => _UserPageState();
+}
 
-  List<SupplierData> filteredSuppliers = [];
-
-  double verticalPadding = 10.0; // Adjust the vertical padding here
+class _UserPageState extends State<UserPage> {
+  late Future<List<UserData>> _usersFuture;
+  List<UserData> users = [];
+  List<UserData> filteredUsers = [];
+  double verticalPadding = 10.0;
 
   @override
   void initState() {
     super.initState();
-    filteredSuppliers = suppliers;
+    _usersFuture = getUsersFromFirestore();
   }
 
-  void filterSuppliers(String query) {
+  Future<List<UserData>> getUsersFromFirestore() async {
+    List<UserData> users = [];
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('sellers').get();
+
+    querySnapshot.docs.forEach((doc) {
+      users.add(UserData(
+        name: doc['Name'],
+        email: doc['Email'],
+        phone: doc['Phone'],
+        profile: doc['profileImageUrl'],
+      ));
+    });
+
+    setState(() {
+      this.users = users;
+      filteredUsers = users;
+    });
+
+    return users;
+  }
+
+  void filterUsers(String query) {
     setState(() {
       if (query.isEmpty) {
-        filteredSuppliers = suppliers;
+        filteredUsers = users;
       } else {
-        filteredSuppliers = suppliers
-            .where((supplier) =>
-                supplier.name.toLowerCase().contains(query.toLowerCase()))
+        filteredUsers = users
+            .where(
+                (user) => user.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -62,17 +64,8 @@ class _SupplierManagementState extends State<SupplierManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 219, 218, 218),
       appBar: AppBar(
-        title: Text(
-          'Supplier Management',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-            color: CustomColor.textBlack,
-          ),
-        ),
-        backgroundColor: Color.fromARGB(255, 219, 218, 218),
+        title: Text('Supplier Management'),
       ),
       body: Column(
         children: [
@@ -87,7 +80,7 @@ class _SupplierManagementState extends State<SupplierManagement> {
                 ),
               ),
               onChanged: (value) {
-                filterSuppliers(value);
+                filterUsers(value);
               },
             ),
           ),
@@ -95,16 +88,16 @@ class _SupplierManagementState extends State<SupplierManagement> {
             child: ListView.builder(
               padding: EdgeInsets.symmetric(
                   vertical: verticalPadding, horizontal: 20),
-              itemCount: filteredSuppliers.length,
+              itemCount: filteredUsers.length,
               itemBuilder: (BuildContext context, int index) {
-                return SupplierCard(
-                  supplierData: filteredSuppliers[index],
+                return UserCard(
+                  userData: filteredUsers[index],
                   onTap: () {
-                    // Navigate to SellerDetails page when a card is tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SellerDetails(),
+                        builder: (context) =>
+                            SellerDetails(userData: filteredUsers[index]),
                       ),
                     );
                   },
@@ -118,26 +111,30 @@ class _SupplierManagementState extends State<SupplierManagement> {
   }
 }
 
-class SupplierData {
+class UserData {
   final String name;
   final String email;
-  final String imagePath;
+  final String phone;
+  final String profile;
 
-  SupplierData({
+  UserData({
     required this.name,
     required this.email,
-    required this.imagePath,
+    required this.profile,
+    required this.phone,
   });
 }
 
-class SupplierCard extends StatelessWidget {
-  final SupplierData supplierData;
+class UserCard extends StatelessWidget {
+  final UserData userData;
   final VoidCallback onTap;
 
-  const SupplierCard({
-    required this.supplierData,
+  const UserCard({
+    required this.userData,
     required this.onTap,
   });
+
+  get profile => null;
 
   @override
   Widget build(BuildContext context) {
@@ -150,37 +147,32 @@ class SupplierCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: NetworkImage(supplierData.imagePath),
+                //child: Text(userData.name[-1]),
+                // ignore: unnecessary_null_comparison
+                backgroundImage: userData.profile != null
+                    ? NetworkImage(userData.profile)
+                    : AssetImage('https://via.placeholder.com/150')
+                        as ImageProvider,
               ),
               SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    supplierData.name,
+                    userData.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
                   Text(
-                    supplierData.email,
+                    userData.email,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 12,
-                      color: CustomColor.textBlack,
                     ),
                   ),
                 ],
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.chevron_right,
-                    color: CustomColor.textBlack,
-                  ),
-                ),
               ),
             ],
           ),
