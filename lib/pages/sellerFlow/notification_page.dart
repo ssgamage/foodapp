@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/pages/sellerFlow/seller_main_home.dart';
 
 class NotificationsPage extends StatelessWidget {
   @override
@@ -9,7 +10,12 @@ class NotificationsPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.home),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SellerMainHomePage()),
+              );
+            },
           ),
         ],
       ),

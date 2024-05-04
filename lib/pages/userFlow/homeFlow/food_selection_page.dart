@@ -10,12 +10,13 @@ class UserFoodSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: CustomColor.textWhite,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: CustomColor.orangeSecondary,
           onPressed: () {
-            // Handle back button press
+            Navigator.pop(context);
           },
         ),
         title: Text(

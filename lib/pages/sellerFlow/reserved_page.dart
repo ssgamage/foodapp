@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/notification_page.dart';
 import 'package:foodapp/pages/sellerFlow/order_conformation_page.dart';
+import 'package:foodapp/pages/sellerFlow/seller_main_home.dart';
 
 class ReservedPage extends StatelessWidget {
   @override
@@ -97,7 +98,12 @@ class _UserPageState extends State<UserPage> {
           ),
           IconButton(
             icon: Icon(Icons.home),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SellerMainHomePage()),
+              );
+            },
           ),
         ],
       ),

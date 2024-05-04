@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodapp/pages/userFlow/homeFlow/more_details_page.dart'; //DistancePage ShopMoreDetails
+import 'package:foodapp/constants/colors.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/more_details_page.dart'; //DistancePage ShopMoreDetails //
 
 class DistancePage extends StatelessWidget {
   @override
@@ -151,44 +152,48 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: CustomColor.ellipse,
       child: InkWell(
         onTap: onTap,
         child: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 30,
-                // ignore: unnecessary_null_comparison
-                backgroundImage: userData.foodimage != null
-                    ? NetworkImage(userData.foodimage)
-                    : AssetImage('https://via.placeholder.com/150')
-                        as ImageProvider,
+              Container(
+                height: 90,
+                width: 130,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  image: DecorationImage(
+                    image: NetworkImage(userData.foodimage),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               Text(
-                userData.price,
+                'Price: Rs ${userData.price}.00',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 1),
               Text(
-                userData.qyt,
+                'Avalability: ${userData.qyt}',
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 12,
                 ),
               ),
-              SizedBox(height: 5),
+              /*SizedBox(height: 5),
               Text(
-                userData.desc,
+                'Tap here to see moe details',
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 12,
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

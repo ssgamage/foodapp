@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart'; //
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/settings/about_app_page.dart';
@@ -5,9 +7,63 @@ import 'package:foodapp/pages/sellerFlow/settings/help_and_support.dart';
 import 'package:foodapp/pages/sellerFlow/settings/languages_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/my_account_page.dart';
 import 'package:foodapp/pages/validationFlow/firebase_auth_implimentation/firebase_auth_services.dart';
+import 'package:foodapp/pages/validationFlow/forgot_pw.dart';
 
-class SellerSettingPage extends StatelessWidget {
+class SellerSettingPage extends StatefulWidget {
+  @override
+  State<SellerSettingPage> createState() => _SellerSettingPageState();
+}
+
+class _SellerSettingPageState extends State<SellerSettingPage> {
   final FirebaseAuthService _authService = FirebaseAuthService();
+
+  String? _profileImageUrl;
+  late Map<String, dynamic> _userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+    _getUserData();
+  }
+
+  void _loadProfileImage() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('sellers')
+            .doc(currentUser.uid)
+            .get();
+        final data = docSnapshot.data();
+        if (data != null && data.containsKey('profileImageUrl')) {
+          setState(() {
+            _profileImageUrl = data['profileImageUrl'];
+          });
+        }
+      } catch (e) {
+        print('Error fetching profile image URL: $e');
+      }
+    }
+  }
+
+  Future<void> _getUserData() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final String uid = currentUser.uid;
+      DocumentSnapshot userDataSnapshot = await FirebaseFirestore.instance
+          .collection(
+              'sellers') // Assuming user data is stored in the 'users' collection
+          .doc(uid) // Use user's UID to retrieve their document
+          .get();
+
+      setState(() {
+        _userData = userDataSnapshot.data() as Map<String, dynamic>;
+      });
+    } else {
+      print('Current user is null');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +88,7 @@ class SellerSettingPage extends StatelessWidget {
               width: 350,
               height: 100,
               padding:
-                  const EdgeInsets.only(right: 100, left: 5, top: 5, bottom: 0),
+                  const EdgeInsets.only(right: 0, left: 0, top: 20, bottom: 0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
@@ -50,14 +106,20 @@ class SellerSettingPage extends StatelessWidget {
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.white,
-                          backgroundImage: AssetImage('assets/your_image.png'),
+                          backgroundImage: _profileImageUrl != null
+                              ? NetworkImage(_profileImageUrl!)
+                              : AssetImage(
+                                      'https://as2.ftcdn.net/v2/jpg/03/59/58/91/1000_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg')
+                                  as ImageProvider,
                         ),
                         SizedBox(width: 15),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Green House',
+                              _userData.containsKey('Name')
+                                  ? _userData['Name']
+                                  : 'Unknown',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColor.textWhite,
@@ -65,7 +127,9 @@ class SellerSettingPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'greenhouse@gmail.com',
+                              _userData.containsKey('Email')
+                                  ? _userData['Email']
+                                  : 'No Contact Details',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: CustomColor.textWhite,
@@ -171,9 +235,19 @@ class SellerSettingPage extends StatelessWidget {
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: Icon(
-                                    Icons.chevron_right,
-                                    color: Colors.black,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPasswordPage()),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),

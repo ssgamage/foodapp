@@ -94,7 +94,7 @@ class _ReportOptionsPageState extends State<ReportOptionsPage> {
                 width: 200, // Adjust the width here
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => UserNotificationPage()),

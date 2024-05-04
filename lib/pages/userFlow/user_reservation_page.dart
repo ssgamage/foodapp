@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/pages/userFlow/homeFlow/shop_report_page.dart';
+import 'package:foodapp/pages/userFlow/settings/profile_view_page.dart';
+import 'package:foodapp/pages/userFlow/user_notification_page.dart';
 
 class UserReservePage1 extends StatelessWidget {
   @override
@@ -70,13 +72,19 @@ class _UserPageState extends State<UserPage> {
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
-              // Add notification logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserNotificationPage()),
+              );
             },
           ),
           IconButton(
             icon: const Icon(Icons.account_circle),
             onPressed: () {
-              // Add profile icon logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfileView()),
+              );
             },
           ),
         ],

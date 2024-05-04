@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/order_report_page.dart';
 import 'package:foodapp/pages/sellerFlow/reserved_page.dart';
@@ -53,8 +53,7 @@ class _OrderConformPageState extends State<OrderConformPage> {
             color: CustomColor.orangeMain,
           ),
           onPressed: () {
-            // Handle back button press
-            print('Back button pressed');
+            Navigator.pop(context);
           },
         ),
       ),

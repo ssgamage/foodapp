@@ -21,6 +21,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
   bool _obscureText = true;
+  bool _obscurePassword = true; // For password visibility
+  bool _obscureConfirmPassword = true;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -111,19 +113,20 @@ class _LoginPageState extends State<LoginPage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 40),
                                 child: TextFormField(
+                                  obscureText: _obscurePassword,
                                   controller: _passwordController,
-                                  obscureText: true,
+                                  //obscureText: true,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
                                     prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          _obscureText = !_obscureText;
+                                          _obscurePassword = !_obscurePassword;
                                         });
                                       },
                                       icon: Icon(
-                                        _obscureText
+                                        _obscurePassword
                                             ? Icons.visibility_off
                                             : Icons.visibility,
                                       ),
@@ -399,7 +402,7 @@ class _LoginPageState extends State<LoginPage> {
           if (userDoc.exists) {
             uid = user.uid;
             collectionName =
-                name; // Assigning the current collection name to collectionName variable
+                name; // Assigning the current collection name to collectionName variable//
             break;
           }
         }
@@ -416,21 +419,19 @@ class _LoginPageState extends State<LoginPage> {
 
           if (role == 'Admin') {
             // Navigate to admin dashboard
-            Navigator.push(
-              context,
-              //MaterialPageRoute(builder: (context) => AdminDashboardPage()),
+            //MaterialPageRoute(builder: (context) => AdminDashboardPage()),
+
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => NavigationPage()),
             );
           } else if (role == 'Seller') {
             // Navigate to seller dashboard
-            Navigator.push(
-              context,
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => SellerMainHomePage()),
             );
           } else {
             // Navigate to user dashboard
-            Navigator.push(
-              context,
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => UserMainHomePage()),
             );
           }

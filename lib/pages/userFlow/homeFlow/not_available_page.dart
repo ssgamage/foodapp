@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/userFlow/homeFlow/user_home_page1.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/main_home_page.dart';
 
 class NotAvailablePage extends StatelessWidget {
   @override
@@ -10,6 +10,7 @@ class NotAvailablePage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -21,8 +22,7 @@ class NotAvailablePage extends StatelessWidget {
                       color: CustomColor.orangeMain,
                     ),
                     onPressed: () {
-                      // Handle back button press
-                      print('Back button pressed');
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -35,9 +35,9 @@ class NotAvailablePage extends StatelessWidget {
         body: Center(
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => UserMainHomePage1()),
+                MaterialPageRoute(builder: (context) => UserMainHomePage()),
               );
             },
             child: Image.asset(

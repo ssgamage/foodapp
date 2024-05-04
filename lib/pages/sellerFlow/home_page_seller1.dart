@@ -1,15 +1,51 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart'; // editing
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/sellerFlow/food_selection_page.dart';
 import 'package:foodapp/pages/sellerFlow/notification_page.dart';
+import 'package:foodapp/pages/sellerFlow/settings/my_account_page.dart';
 
-class SellerMainHomePage1 extends StatelessWidget {
+class SellerMainHomePage1 extends StatefulWidget {
   const SellerMainHomePage1({Key? key}) : super(key: key);
+
+  @override
+  State<SellerMainHomePage1> createState() => _SellerMainHomePage1State();
+}
+
+class _SellerMainHomePage1State extends State<SellerMainHomePage1> {
+  late Map<String, dynamic> _userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    //_user = FirebaseAuth.instance.currentUser!;
+    _getUserData();
+  }
+
+  Future<void> _getUserData() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final String uid = currentUser.uid;
+      DocumentSnapshot userDataSnapshot = await FirebaseFirestore.instance
+          .collection(
+              'sellers') // Assuming user data is stored in the 'users' collection
+          .doc(uid) // Use user's UID to retrieve their document
+          .get();
+
+      setState(() {
+        _userData = userDataSnapshot.data() as Map<String, dynamic>;
+      });
+    } else {
+      print('Current user is null');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'EasyEats',
           style: TextStyle(
@@ -44,7 +80,10 @@ class SellerMainHomePage1 extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
-              // Add profile icon logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyAccountPage()),
+              );
             },
           ),
         ],
@@ -81,7 +120,7 @@ class SellerMainHomePage1 extends StatelessWidget {
               child: SizedBox(
                 width: 210,
                 child: Text(
-                  'Welcome Chathurika Alwis',
+                  'Welcome ${_userData['Name']}',
                   style: const TextStyle(
                     color: CustomColor.textBlack,
                     fontSize: 16,

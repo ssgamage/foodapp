@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/sellerFlow/settings/main_setting_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/my_account_page1.dart';
 
 class MyAccountPage extends StatefulWidget {
@@ -14,11 +13,13 @@ class MyAccountPage extends StatefulWidget {
 
 class _MyAccountPageState extends State<MyAccountPage> {
   String? _profileImageUrl;
+  late Map<String, dynamic> _userData = {};
 
   @override
   void initState() {
     super.initState();
     _loadProfileImage();
+    _getUserData();
   }
 
   void _loadProfileImage() async {
@@ -41,10 +42,29 @@ class _MyAccountPageState extends State<MyAccountPage> {
     }
   }
 
+  Future<void> _getUserData() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final String uid = currentUser.uid;
+      DocumentSnapshot userDataSnapshot = await FirebaseFirestore.instance
+          .collection(
+              'sellers') // Assuming user data is stored in the 'users' collection
+          .doc(uid) // Use user's UID to retrieve their document
+          .get();
+
+      setState(() {
+        _userData = userDataSnapshot.data() as Map<String, dynamic>;
+      });
+    } else {
+      print('Current user is null');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             IconButton(
@@ -53,7 +73,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 color: Colors.orange,
               ),
               onPressed: () {
-                // Add navigation logic here
+                Navigator.pop(context);
               },
             ),
             const Text('My Account'),
@@ -64,17 +84,20 @@ class _MyAccountPageState extends State<MyAccountPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.blue,
-              backgroundImage: _profileImageUrl != null
-                  ? NetworkImage(_profileImageUrl!)
-                  : AssetImage(
-                          'https://as2.ftcdn.net/v2/jpg/03/59/58/91/1000_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg')
-                      as ImageProvider, // Cast AssetImage to ImageProvider
+            Align(
+              alignment: Alignment.center,
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.blue,
+                backgroundImage: _profileImageUrl != null
+                    ? NetworkImage(_profileImageUrl!)
+                    : AssetImage(
+                            'https://as2.ftcdn.net/v2/jpg/03/59/58/91/1000_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg')
+                        as ImageProvider, // Cast AssetImage to ImageProvider
+              ),
             ),
-
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,7 +113,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => MyAccountPage1()),
                     );
@@ -108,12 +131,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Enter Shop Name',
+                  labelText: 'Name: ${_userData['Name']}',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(10.0),
                 ),
+                readOnly: true,
               ),
             ),
             const SizedBox(height: 10),
@@ -122,76 +146,44 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Enter About',
+                  labelText:
+                      'Description: ${_userData.containsKey('Description') ? _userData['Description'] : 'Unavalilable'}',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(20.0),
                 ),
+                readOnly: true,
               ),
             ),
-
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Enter Number 1',
+                  labelText: 'Telephone: ${_userData['Phone']}',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(10.0),
                 ),
+                readOnly: true,
               ),
             ),
-
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Enter Number 2',
+                  labelText: 'Email: ${_userData['Email']}',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(10.0),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Enter Gmail',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(10.0),
-                ),
-              ),
-            ),
-
-            // Repeat the above pattern for other text fields
-            const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SellerSettingPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white),
-                child: const Text('Save'),
+                readOnly: true,
               ),
             ),
           ],

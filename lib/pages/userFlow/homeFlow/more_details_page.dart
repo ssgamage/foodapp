@@ -72,7 +72,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
           {'quantity': (currentQuantity - reservedQuantity).toString()});
     } catch (error) {
       print('Error decreasing quantity: $error');
-      // Handle error
+      // Handle error//
     }
   }
 
@@ -96,7 +96,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
       });
 
       // Navigate to the FoodSavePage
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DistancePage()),
       );

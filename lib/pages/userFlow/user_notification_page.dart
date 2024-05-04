@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodapp/pages/userFlow/homeFlow/shop_report_page.dart';
+import 'package:foodapp/pages/userFlow/homeFlow/main_home_page.dart';
 
 class BoldText extends StatelessWidget {
   final String text;
@@ -24,7 +24,12 @@ class UserNotificationPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.home),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => UserMainHomePage()),
+              );
+            },
           ),
         ],
       ),
@@ -93,13 +98,7 @@ class MyWidgets extends StatelessWidget {
               // Navigate to a different page based on the tapped card
               switch (index) {
                 case 1:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShopReportPage(
-                              userData: null,
-                            )),
-                  );
+                  //
                   break;
                 default:
                   break;

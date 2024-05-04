@@ -1,13 +1,65 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart'; //
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/userFlow/settings/profile_edit_page.dart';
 
 class UserProfileView extends StatefulWidget {
+  const UserProfileView({Key? key}) : super(key: key);
+
   @override
   _UserProfileViewState createState() => _UserProfileViewState();
 }
 
 class _UserProfileViewState extends State<UserProfileView> {
+  String? _profileImageUrl;
+  late Map<String, dynamic> _userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+    _getUserData();
+  }
+
+  void _loadProfileImage() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+        final data = docSnapshot.data();
+        if (data != null && data.containsKey('profileImageUrl')) {
+          setState(() {
+            _profileImageUrl = data['profileImageUrl'];
+          });
+        }
+      } catch (e) {
+        print('Error fetching profile image URL: $e');
+      }
+    }
+  }
+
+  Future<void> _getUserData() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final String uid = currentUser.uid;
+      DocumentSnapshot userDataSnapshot = await FirebaseFirestore.instance
+          .collection(
+              'users') // Assuming user data is stored in the 'users' collection
+          .doc(uid) // Use user's UID to retrieve their document
+          .get();
+
+      setState(() {
+        _userData = userDataSnapshot.data() as Map<String, dynamic>;
+      });
+    } else {
+      print('Current user is null');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +87,22 @@ class _UserProfileViewState extends State<UserProfileView> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Image.asset(
-                  'assets/images/userflow/ca1.png',
-                  width: 100,
-                  height: 100,
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.blue,
+                  backgroundImage: _profileImageUrl != null
+                      ? NetworkImage(_profileImageUrl!)
+                      : AssetImage(
+                              'https://as2.ftcdn.net/v2/jpg/03/59/58/91/1000_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.jpg')
+                          as ImageProvider, // Cast AssetImage to ImageProvider
                 ),
                 SizedBox(height: 10),
                 Column(
                   children: [
                     Text(
-                      'Cathura Dilshan',
+                      _userData.containsKey('Name')
+                          ? _userData['Name']
+                          : 'Loading..',
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
@@ -52,7 +110,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                     Opacity(
                       opacity: 0.6,
                       child: Text(
-                        '@Chathura.ac.lk',
+                        _userData.containsKey('Email')
+                            ? _userData['Email']
+                            : 'Loading..',
                         style: TextStyle(
                             fontSize: 14.0, fontStyle: FontStyle.italic),
                       ),
@@ -79,7 +139,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UserProfileEdit()),
@@ -119,7 +179,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                           SizedBox(
                               width: 5), // Add spacing between label and value
                           Text(
-                            'chathura',
+                            _userData.containsKey('Name')
+                                ? _userData['Name']
+                                : 'Loading..',
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -146,7 +208,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'Dilshan@gmail.com',
+                            _userData.containsKey('Email')
+                                ? _userData['Email']
+                                : 'Loading..',
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -172,7 +236,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            '0771324586',
+                            _userData.containsKey('Phone')
+                                ? _userData['Phone']
+                                : 'Loading..',
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -198,43 +264,16 @@ class _UserProfileViewState extends State<UserProfileView> {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'No.132/4, Pitipana, Homagama',
+                            _userData.containsKey('Address')
+                                ? _userData['Address']
+                                : 'Data Not available',
                             style: TextStyle(
                               fontSize: 14,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    Container(
-                      padding: EdgeInsets.all(18.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Date of Birth:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            '07/03/2002',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                        height:
-                            20), // Add some vertical spacing after the last field
+                    ), // Add some vertical spacing after the last field
                   ],
                 ),
                 Row(
