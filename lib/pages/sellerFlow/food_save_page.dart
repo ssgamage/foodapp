@@ -35,7 +35,7 @@ class FoodSavePage extends StatelessWidget {
         body: Center(
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => SellerFoodSelectionPage()),
