@@ -151,7 +151,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   labelText:
                       'Description: ${_userData.containsKey('Description') ? _userData['Description'] : 'Unavalilable'}',
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(20.0),
+                  contentPadding: EdgeInsets.all(10.0),
                 ),
                 readOnly: true,
               ),

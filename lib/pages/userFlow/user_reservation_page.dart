@@ -183,7 +183,7 @@ class UserCard extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  'Qyt: ${userData.qyt}', // cancel ,compltetd , cancelled
+                  'Qyt: ${userData.qyt}', // cancel ,completed , cancelled
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black,
