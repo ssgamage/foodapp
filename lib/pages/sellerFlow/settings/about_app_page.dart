@@ -6,6 +6,7 @@ class AboutAppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -17,8 +18,7 @@ class AboutAppPage extends StatelessWidget {
                     color: CustomColor.orangeMain,
                   ),
                   onPressed: () {
-                    // Handle back button press
-                    print('Back button pressed');
+                    Navigator.pop(context);
                   },
                 ),
                 Text(
