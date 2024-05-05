@@ -40,7 +40,7 @@ class _OrderConformPageState extends State<OrderConformPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Orderer Details',
+          'Order Details',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -141,11 +141,11 @@ class _OrderConformPageState extends State<OrderConformPage> {
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: TextFormField(
               decoration: InputDecoration(
-                labelText: 'Quntity',
+                labelText: 'Quantity',
                 labelStyle: TextStyle(
                   color: CustomColor.textBlack,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
