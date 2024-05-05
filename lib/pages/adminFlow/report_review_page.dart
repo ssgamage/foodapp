@@ -22,8 +22,7 @@ class ReporReviewPage extends StatelessWidget {
             color: CustomColor.orangeMain,
           ),
           onPressed: () {
-            // Handle back button press
-            print('Back button pressed');
+            Navigator.pop(context);
           },
         ),
       ),
@@ -36,7 +35,7 @@ class ReporReviewPage extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 70),
               width: 350,
               height: 100,
-              padding: const EdgeInsets.only(right: 5, left: 5, bottom: 10),
+              padding: const EdgeInsets.only(right: 0, left: 10, bottom: 0),
               decoration: BoxDecoration(
                 color: CustomColor.textWhite, // Changed to blue color
               ),
@@ -62,7 +61,7 @@ class ReporReviewPage extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        'Reason: Poor Food Quality (Green House)',
+                        'Reason: Poor Food Quality\n(Green House)',
                         style: TextStyle(
                           fontSize: 12,
                           color: CustomColor.textBlack,

@@ -9,10 +9,22 @@ class UserDetailsPage extends StatelessWidget {
 
   get profile => null; // Add this constructor
 
+// Function to delete user by UID
+  /*Future<void> deleteUserByUid(String uid) async {
+    try {
+      // Delete the user from Firebase Authentication
+      await FirebaseAuth.instance.deleteUser(uid);
+      print('User with UID $uid deleted successfully.');
+    } catch (e) {
+      print('Failed to delete user: $e');
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           userData.name, // Display user's name in the app bar
           style: TextStyle(
@@ -43,10 +55,10 @@ class UserDetailsPage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    /*backgroundImage: profile != null
-                        ? NetworkImage(profile!)
+                    backgroundImage: userData.profile != null
+                        ? NetworkImage(userData.profile)
                         : AssetImage('https://via.placeholder.com/150')
-                            as ImageProvider,*/ // Change image URL
+                            as ImageProvider,
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -137,7 +149,7 @@ class UserDetailsPage extends StatelessWidget {
             SizedBox(width: 30),
             ElevatedButton(
               onPressed: () {
-                // Add your action for the second button here
+                //deleteUserByUid(userData.uid);
                 print('Report button pressed');
               },
               style: ElevatedButton.styleFrom(

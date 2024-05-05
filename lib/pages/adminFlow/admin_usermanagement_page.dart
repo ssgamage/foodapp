@@ -35,7 +35,8 @@ class _UserPageState extends State<UserPage> {
       users.add(UserData(
         name: doc['Name'],
         email: doc['Email'],
-        //profile: doc['profileImageUrl'],
+        profile: doc['profileImageUrl'],
+        uid: doc['uid'],
       ));
     });
 
@@ -113,11 +114,14 @@ class _UserPageState extends State<UserPage> {
 class UserData {
   final String name;
   final String email;
+  final String profile;
+  final String uid;
 
   UserData({
     required this.name,
     required this.email,
-    //required profile,
+    required this.profile,
+    required this.uid,
   });
 }
 
@@ -130,6 +134,8 @@ class UserCard extends StatelessWidget {
     required this.onTap,
   });
 
+  get profile => null;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -141,7 +147,10 @@ class UserCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                child: Text(userData.name[0]),
+                backgroundImage: userData.profile != null
+                    ? NetworkImage(userData.profile)
+                    : AssetImage('https://via.placeholder.com/150')
+                        as ImageProvider,
               ),
               SizedBox(width: 15),
               Column(

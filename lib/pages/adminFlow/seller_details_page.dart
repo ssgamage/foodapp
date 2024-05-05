@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/adminFlow/admin_sellermanagement_page.dart';
 
@@ -11,6 +11,7 @@ class SellerDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           userData.name, // Display user's name in the app bar
           style: TextStyle(

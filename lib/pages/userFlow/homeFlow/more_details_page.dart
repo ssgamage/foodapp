@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/pages/userFlow/homeFlow/distance_page.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShopMoreDetails extends StatefulWidget {
@@ -125,6 +126,42 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
     } catch (error) {
       // Handle any errors that occur during saving
       print('Error Reserving: $error');
+    }
+  }
+
+  Future<void> _addAdminTableDetails() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      // Ensure a valid user is logged in
+      if (currentUser == null) {
+        print('Error: User not logged in. Please sign in first.');
+        return; // Exit the function if no user is logged in
+      }
+
+      // Import the DateFormat class
+      final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+      // Get the current date and time
+      final now = DateTime.now();
+      final formattedTime = formatter.format(now);
+
+      // Save food details to Firestore
+      await FirebaseFirestore.instance
+          .collection('logs')
+          .doc() // Generate a new document ID automatically
+          .set({
+        'meal': "Breakfast",
+        'catogary': "Rice And Curry",
+        'time': formattedTime,
+        'sid': widget.userData.docId,
+        'uid': currentUser.uid,
+      });
+
+      print('Admin table details added successfully!');
+    } catch (error) {
+      // Handle any errors that occur during saving
+      print('Error adding table details: $error');
     }
   }
 
@@ -315,6 +352,7 @@ class _ShopMoreDetailsState extends State<ShopMoreDetails> {
                           // UserReservePage
                           _addSellerNotification();
                           _addUserNotification();
+                          _addAdminTableDetails();
                         },
                         style: ButtonStyle(
                           backgroundColor:

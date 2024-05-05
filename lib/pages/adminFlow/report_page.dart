@@ -1,8 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //
 import 'package:foodapp/constants/colors.dart';
 import 'package:foodapp/pages/adminFlow/report_review_page.dart';
+import 'package:foodapp/pages/validationFlow/firebase_auth_implimentation/firebase_auth_services.dart';
 
-class ReportPage extends StatelessWidget {
+class ReportPage extends StatefulWidget {
+  @override
+  State<ReportPage> createState() => _ReportPageState();
+}
+
+class _ReportPageState extends State<ReportPage> {
+  final FirebaseAuthService _authService = FirebaseAuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +29,7 @@ class ReportPage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16.0),
             child: ElevatedButton.icon(
               onPressed: () {
-                print('Logged out');
+                _handleLogout(context);
               },
               icon: Icon(
                 Icons.logout,
@@ -174,5 +182,9 @@ class ReportPage extends StatelessWidget {
         builder: (context) => ReporReviewPage(),
       ),
     );
+  }
+
+  void _handleLogout(BuildContext context) async {
+    await _authService.signOut(context); // Call the signOut method
   }
 }
