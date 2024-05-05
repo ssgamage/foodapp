@@ -144,8 +144,8 @@ class _OrderConformPageState extends State<OrderConformPage> {
                 labelText: 'Quantity',
                 labelStyle: TextStyle(
                   color: CustomColor.textBlack,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
