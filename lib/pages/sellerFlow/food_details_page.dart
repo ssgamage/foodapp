@@ -160,7 +160,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
                       backgroundColor: CustomColor.orangeMain,
                     ),
                     child: Text(
-                      'Update Meal Image',
+                      'Upload Meal Image',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
