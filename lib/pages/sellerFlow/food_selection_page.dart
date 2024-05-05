@@ -16,7 +16,7 @@ class SellerFoodSelectionPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           color: CustomColor.orangeSecondary,
           onPressed: () {
-            // Handle back button press
+            Navigator.pop(context);
           },
         ),
         title: Text(
