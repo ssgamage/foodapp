@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/sellerFlow/food_selection_page.dart';
+import 'package:foodapp/pages/sellerFlow/food_add_view.dart';
 
 class FoodSavePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lunch Not Available',
+      title: '',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -21,8 +21,11 @@ class FoodSavePage extends StatelessWidget {
                       color: CustomColor.orangeMain,
                     ),
                     onPressed: () {
-                      // Handle back button press
-                      print('Back button pressed');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FoodAddSavePage()),
+                      );
                     },
                   ),
                 ],
@@ -37,8 +40,7 @@ class FoodSavePage extends StatelessWidget {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => SellerFoodSelectionPage()),
+                MaterialPageRoute(builder: (context) => FoodAddSavePage()),
               );
               //print('Save button pressed');
             },

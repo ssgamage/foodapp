@@ -76,6 +76,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
           .set({
         'imageUrl': imageUrl,
         'price': _priceController.text,
+        'food': "Rice & Curry",
         'quantity': _quantityController.text,
         'description': _descriptionController.text,
         'location':
@@ -83,7 +84,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
       });
 
       // Navigate to the FoodSavePage
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => FoodSavePage()),
       );

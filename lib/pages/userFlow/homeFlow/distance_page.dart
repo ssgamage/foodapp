@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
-import 'package:foodapp/pages/userFlow/homeFlow/more_details_page.dart'; //DistancePage ShopMoreDetails //
+import 'package:foodapp/pages/userFlow/homeFlow/more_details_page.dart'; //DistancePage ShopMoreDetails
 
 class DistancePage extends StatelessWidget {
   @override
