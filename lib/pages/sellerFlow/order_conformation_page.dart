@@ -145,7 +145,7 @@ class _OrderConformPageState extends State<OrderConformPage> {
                 labelStyle: TextStyle(
                   color: CustomColor.textBlack,
                   fontWeight: FontWeight.normal,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
