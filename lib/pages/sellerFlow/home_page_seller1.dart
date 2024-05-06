@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/constants/colors.dart';
+import 'package:foodapp/pages/sellerFlow/food_add_view.dart';
 import 'package:foodapp/pages/sellerFlow/food_selection_page.dart';
 import 'package:foodapp/pages/sellerFlow/notification_page.dart';
 import 'package:foodapp/pages/sellerFlow/settings/my_account_page.dart';
@@ -95,6 +96,15 @@ class _SellerMainHomePage1State extends State<SellerMainHomePage1> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => NotificationsPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.liquor_sharp),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FoodAddSavePage()),
               );
             },
           ),
