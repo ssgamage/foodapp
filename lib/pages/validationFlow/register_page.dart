@@ -38,40 +38,106 @@ class _RegisterpageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future signUpU() async {
-    if (passwordConfirmed()) {
-      // Create user using Firebase Auth
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim());
-
-      // Check selected account type
-      if (selectedAccountType == 'User') {
-        addUserDetails(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-          _phoneController.text.trim(),
-          selectedAccountType!,
-          userCredential.user!.uid, // Pass UID to identify user document
+  Future signUpU(BuildContext context) async {
+    try {
+      if (_passwordController.text.trim().length < 6) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Password should be at least 6 characters long!"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
         );
-      } else if (selectedAccountType == 'Admin') {
-        addAdminDetails(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-          _phoneController.text.trim(),
-          selectedAccountType!,
-          userCredential.user!.uid, // Pass UID to identify admin document
+        return;
+      }
+      if (passwordConfirmed()) {
+        // Create user using Firebase Auth
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim());
+
+        // Check selected account type
+        if (selectedAccountType == 'User') {
+          addUserDetails(
+            _nameController.text.trim(),
+            _emailController.text.trim(),
+            _phoneController.text.trim(),
+            selectedAccountType!,
+            userCredential.user!.uid, // Pass UID to identify user document
+          );
+        } else if (selectedAccountType == 'Admin') {
+          addAdminDetails(
+            _nameController.text.trim(),
+            _emailController.text.trim(),
+            _phoneController.text.trim(),
+            selectedAccountType!,
+            userCredential.user!.uid, // Pass UID to identify admin document
+          );
+        } else {
+          addSellerDetails(
+            _nameController.text.trim(),
+            _emailController.text.trim(),
+            _phoneController.text.trim(),
+            selectedAccountType!,
+            userCredential.user!.uid, // Pass UID to identify seller document
+          );
+        }
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(title: "Login"),
+          ),
         );
       } else {
-        addSellerDetails(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-          _phoneController.text.trim(),
-          selectedAccountType!,
-          userCredential.user!.uid, // Pass UID to identify seller document
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Passwords do not match! Please check again.."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
         );
       }
+    } catch (error) {
+      // Handle registration errors
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text(error.toString()),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -328,7 +394,7 @@ class _RegisterpageState extends State<RegisterPage> {
                         SizedBox(height: 4),
                         ElevatedButton(
                           onPressed: () {
-                            signUpU();
+                            signUpU(context);
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: CustomColor.textWhite,

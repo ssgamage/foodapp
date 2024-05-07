@@ -17,7 +17,7 @@ class _ReportOptionsPageState extends State<ReportOptionsPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Add navigation functionality here if needed
+            Navigator.of(context).pop();
           },
         ),
         title: Text(
