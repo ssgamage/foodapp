@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; //
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/pages/adminFlow/seller_details_page.dart';
 
@@ -33,10 +33,12 @@ class _UserPageState extends State<UserPage> {
 
     querySnapshot.docs.forEach((doc) {
       users.add(UserData(
-        name: doc['Name'],
-        email: doc['Email'],
-        phone: doc['Phone'],
-        profile: doc['profileImageUrl'],
+        name: doc.data().containsKey('Name') ? doc['Name'] : 'No Name',
+        email: doc.data().containsKey('Email') ? doc['Email'] : 'No Email',
+        phone: doc.data().containsKey('Phone') ? doc['Phone'] : 'No Phone',
+        profile: doc.data().containsKey('profileImageUrl')
+            ? doc['profileImageUrl']
+            : '',
       ));
     });
 
@@ -85,23 +87,36 @@ class _UserPageState extends State<UserPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(
-                  vertical: verticalPadding, horizontal: 20),
-              itemCount: filteredUsers.length,
-              itemBuilder: (BuildContext context, int index) {
-                return UserCard(
-                  userData: filteredUsers[index],
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SellerDetails(userData: filteredUsers[index]),
-                      ),
-                    );
-                  },
-                );
+            child: FutureBuilder<List<UserData>>(
+              future: _usersFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No users found.'));
+                } else {
+                  return ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                        vertical: verticalPadding, horizontal: 20),
+                    itemCount: filteredUsers.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return UserCard(
+                        userData: filteredUsers[index],
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SellerDetails(userData: filteredUsers[index]),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
@@ -134,8 +149,6 @@ class UserCard extends StatelessWidget {
     required this.onTap,
   });
 
-  get profile => null;
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -147,11 +160,10 @@ class UserCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                //child: Text(userData.name[-1]),
-                // ignore: unnecessary_null_comparison
-                backgroundImage: userData.profile != null
+                backgroundImage: userData.profile.isNotEmpty
                     ? NetworkImage(userData.profile)
-                    : AssetImage('https://via.placeholder.com/150')
+                    : NetworkImage(
+                            'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg')
                         as ImageProvider,
               ),
               SizedBox(width: 15),
